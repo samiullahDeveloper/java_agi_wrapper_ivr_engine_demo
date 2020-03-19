@@ -1,0 +1,97 @@
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet
+            id="1.0"
+            author="sami">
+      <sql>
+
+            CREATE TABLE activity (
+              id int(11) NOT NULL AUTO_INCREMENT,
+              cellno varchar(12) DEFAULT NULL,
+              dt datetime DEFAULT NULL,
+              activity_type varchar(170) DEFAULT NULL,
+              duration int(11) DEFAULT NULL,
+              dtmf varchar(2) DEFAULT NULL,
+              context varchar(170) DEFAULT NULL,
+              unique_id varchar(120) DEFAULT NULL,
+              PRIMARY KEY (id)
+            ) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8;
+
+            CREATE TABLE cdr (
+              calldate datetime NOT NULL,
+              clid varchar(80) NOT NULL DEFAULT '',
+              src varchar(80) NOT NULL DEFAULT '',
+              dst varchar(80) NOT NULL DEFAULT '',
+              dcontext varchar(80) NOT NULL DEFAULT '',
+              channel varchar(80) NOT NULL DEFAULT '',
+              dstchannel varchar(80) NOT NULL DEFAULT '',
+              lastapp varchar(80) NOT NULL DEFAULT '',
+              lastdata varchar(80) NOT NULL DEFAULT '',
+              duration int(11) NOT NULL DEFAULT '0',
+              billsec int(11) NOT NULL DEFAULT '0',
+              disposition varchar(45) NOT NULL DEFAULT '',
+              amaflags int(11) NOT NULL DEFAULT '0',
+              accountcode varchar(20) NOT NULL DEFAULT '',
+              uniqueid varchar(32) NOT NULL DEFAULT '',
+              userfield varchar(255) NOT NULL DEFAULT ''
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+            CREATE TABLE content (
+              content_id int(11) NOT NULL AUTO_INCREMENT,
+              content_category tinyint(4) NOT NULL COMMENT '1-Entertainment\n2-Sports\n3-Health and Fitness\n4-Literature\n5.Science and Technology',
+              file_name varchar(100) NOT NULL,
+              creation_timestamp datetime NOT NULL,
+              PRIMARY KEY (content_id)
+            ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+
+            CREATE TABLE content_files (
+              id int(11) NOT NULL AUTO_INCREMENT,
+              filename varchar(50) NOT NULL,
+              is_active bit(1) NOT NULL,
+              dt_modified datetime NOT NULL,
+              PRIMARY KEY (id)
+            ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+            CREATE TABLE ivr_menu (
+              ivr_menu_id int(11) NOT NULL AUTO_INCREMENT,
+              file_name varchar(100) NOT NULL,
+              PRIMARY KEY (ivr_menu_id)
+            ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+            CREATE TABLE subscribers (
+              cellno varchar(11) NOT NULL,
+              lang varchar(10) NOT NULL,
+              is_active bit(1) NOT NULL,
+              sub_dt datetime NOT NULL,
+              PRIMARY KEY (cellno),
+              UNIQUE KEY cellno_UNIQUE (cellno)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+            CREATE TABLE user (
+              msisdn varchar(15) NOT NULL,
+              subscription_status tinyint(4) NOT NULL COMMENT '0-Unsubscribed\n1-Subscribed',
+              reponse_status tinyint(4) DEFAULT NULL COMMENT '1-No response\n2-Hangup\n3-Answered',
+              call_action tinyint(4) DEFAULT NULL COMMENT 'call action is actually iput of user during call (DTMF)',
+              call_duration int(11) DEFAULT NULL COMMENT 'call duration is in seconds',
+              PRIMARY KEY (msisdn)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+      </sql>
+      <rollback>
+          <sql>
+              DELETE FROM activity;
+              DELETE FROM cdr;
+              DELETE FROM content;
+              DELETE FROM content_files;
+              DELETE FROM ivr_menu;
+              DELETE FROM subscribers;
+              DELETE FROM user;
+          </sql>
+      </rollback>
+  </changeSet>
+
+</databaseChangeLog>
