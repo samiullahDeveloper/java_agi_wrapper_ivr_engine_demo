@@ -8,7 +8,6 @@
             id="1.0"
             author="sami">
       <sql>
-
             CREATE TABLE activity (
               id int(11) NOT NULL AUTO_INCREMENT,
               cellno varchar(12) DEFAULT NULL,
