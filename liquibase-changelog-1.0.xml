@@ -8,7 +8,7 @@
             id="1.0"
             author="sami">
       <sql>
-            CREATE TABLE activity (
+            CREATE TABLE IF NOT EXISTS activity (
               id int(11) NOT NULL AUTO_INCREMENT,
               cellno varchar(12) DEFAULT NULL,
               dt datetime DEFAULT NULL,
@@ -20,7 +20,7 @@
               PRIMARY KEY (id)
             ) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8;
 
-            CREATE TABLE cdr (
+            CREATE TABLE IF NOT EXISTS cdr (
               calldate datetime NOT NULL,
               clid varchar(80) NOT NULL DEFAULT '',
               src varchar(80) NOT NULL DEFAULT '',
@@ -39,7 +39,7 @@
               userfield varchar(255) NOT NULL DEFAULT ''
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-            CREATE TABLE content (
+            CREATE TABLE IF NOT EXISTS content (
               content_id int(11) NOT NULL AUTO_INCREMENT,
               content_category tinyint(4) NOT NULL COMMENT '1-Entertainment\n2-Sports\n3-Health and Fitness\n4-Literature\n5.Science and Technology',
               file_name varchar(100) NOT NULL,
@@ -47,7 +47,7 @@
               PRIMARY KEY (content_id)
             ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
-            CREATE TABLE content_files (
+            CREATE TABLE IF NOT EXISTS content_files (
               id int(11) NOT NULL AUTO_INCREMENT,
               filename varchar(50) NOT NULL,
               is_active bit(1) NOT NULL,
@@ -55,13 +55,13 @@
               PRIMARY KEY (id)
             ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
-            CREATE TABLE ivr_menu (
+            CREATE TABLE IF NOT EXISTS ivr_menu (
               ivr_menu_id int(11) NOT NULL AUTO_INCREMENT,
               file_name varchar(100) NOT NULL,
               PRIMARY KEY (ivr_menu_id)
             ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
-            CREATE TABLE subscribers (
+            CREATE TABLE IF NOT EXISTS subscribers (
               cellno varchar(11) NOT NULL,
               lang varchar(10) NOT NULL,
               is_active bit(1) NOT NULL,
@@ -70,7 +70,7 @@
               UNIQUE KEY cellno_UNIQUE (cellno)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-            CREATE TABLE user (
+            CREATE TABLE IF NOT EXISTS user (
               msisdn varchar(15) NOT NULL,
               subscription_status tinyint(4) NOT NULL COMMENT '0-Unsubscribed\n1-Subscribed',
               reponse_status tinyint(4) DEFAULT NULL COMMENT '1-No response\n2-Hangup\n3-Answered',
@@ -82,13 +82,7 @@
       </sql>
       <rollback>
           <sql>
-              DELETE FROM activity;
-              DELETE FROM cdr;
-              DELETE FROM content;
-              DELETE FROM content_files;
-              DELETE FROM ivr_menu;
-              DELETE FROM subscribers;
-              DELETE FROM user;
+              DROP TABLE IF EXISTS activity,cdr,content,content_files,ivr_menu,subscribers,user;
           </sql>
       </rollback>
   </changeSet>
